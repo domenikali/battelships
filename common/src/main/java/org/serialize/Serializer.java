@@ -5,11 +5,10 @@ package org.serialize;
 public abstract class Serializer<T> {
     /**
      * Serialization method to serialize each class
-     * @param object object to serialize
      * @return Serialized string returned
      * @throws IllegalArgumentException if the object passed is not the one required by the class implementation
      */
-    public abstract String serialize(T object) throws IllegalArgumentException;
+    public abstract String serialize();
 
     /**
      * Deserialization method to deserialize each message to specific class
