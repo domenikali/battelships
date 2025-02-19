@@ -1,6 +1,6 @@
 package org.util;
 
-import org.serialize.Serializer;
+import org.server.Serializer;
 
 /**
  * Pair cals to use for any two-dimensional coordinate

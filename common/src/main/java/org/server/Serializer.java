@@ -1,4 +1,4 @@
-package org.serialize;
+package org.server;
 /**
  * Abstract class to standardized serialization and deserialization of data
  * */

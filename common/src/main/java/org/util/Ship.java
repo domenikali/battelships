@@ -1,6 +1,6 @@
 package org.util;
 
-import org.serialize.Serializer;
+import org.server.Serializer;
 
 public class Ship extends Serializer<Ship> {
     private final Direction direction;
