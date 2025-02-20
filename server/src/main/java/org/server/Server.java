@@ -13,6 +13,7 @@ public class Server {
         try {
             GameServer gameServer = new GameServer();
             gameServer.start();
+
         }catch (IOException e){
             System.err.println("Game server stopped unexpectedly: "+ e);
             System.exit(1);

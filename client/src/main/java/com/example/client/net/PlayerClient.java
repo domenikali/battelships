@@ -33,8 +33,8 @@ public class PlayerClient {
             this.closeAll();
             System.exit(1);
         }
-
         this.send(this.user);
+
     }
 
     public String receive(){
@@ -51,7 +51,7 @@ public class PlayerClient {
 
     public void send(String s){
         try{
-            this.writer.write(s);
+            this.writer.write(s+"\n");
             this.writer.flush();
         }catch (IOException |NullPointerException e){
             this.closeAll();

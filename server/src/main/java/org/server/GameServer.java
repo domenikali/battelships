@@ -33,10 +33,11 @@ public class GameServer {
     public void start(){
         while (true){
             try {
+                System.out.println("SERVER: ready to accept...");
                 Socket socket = serverSocket.accept();
                 System.out.println("SERVER: accepting...");
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                Thread.sleep(100);
+                //Thread.sleep(100);
                 String user = bufferedReader.readLine();
                 playersQueue.add(new Player(socket, user));
                 System.out.println("SERVER: " + user + " accepted successfully!");
@@ -45,7 +46,7 @@ public class GameServer {
                     gameLobby.setDaemon(true);
                     gameLobby.start();
                 }
-            }catch (IOException | InterruptedException e){
+            }catch (IOException e){
                 System.err.println(e);
 
             }
