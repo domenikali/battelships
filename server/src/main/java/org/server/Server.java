@@ -1,9 +1,6 @@
 package org.server;
 
-import org.net.Player;
-
 import java.io.IOException;
-import java.util.List;
 
 public class Server {
 
