@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Random;
 
 class GameServerTest {
     private ByteArrayOutputStream outputStream;
@@ -27,14 +28,15 @@ class GameServerTest {
      * */
     @Test
     public void generalTest(){
+        int port = new Random().nextInt(8080,10000);
         try {
-            GameServer g = new GameServer();
+            GameServer g = new GameServer(port);
             Thread serverT=new Thread(g::start);
             serverT.start();
 
             Thread t= new Thread(() -> {
                 try {
-                    Socket s = new Socket("localhost",8080);
+                    Socket s = new Socket("localhost",port);
                     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
                     out.write("test");
                     out.flush();
@@ -60,15 +62,17 @@ class GameServerTest {
      */
     @Test
     public void timeOut(){
+        int port = new Random().nextInt(8080,10000);
+
         try{
-            GameServer g = new GameServer();
+            GameServer g = new GameServer(port);
             Thread serverT=new Thread(g::start);
             serverT.start();
 
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    try(Socket ignored = new Socket("localhost", 8080)) {
+                    try(Socket ignored = new Socket("localhost", port)) {
                         Thread.sleep(1000);
                     }catch (IOException|InterruptedException e){
                         fail("IOEX: "+e);

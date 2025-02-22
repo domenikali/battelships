@@ -8,7 +8,7 @@ public class Server {
     public static void main(String[] args) {
         System.out.println("Server Running!");
         try {
-            GameServer gameServer = new GameServer();
+            GameServer gameServer = new GameServer(8080);
             gameServer.start();
 
         }catch (IOException e){

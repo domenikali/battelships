@@ -23,8 +23,13 @@ public class GameServer {
 
 
     private final ServerSocket serverSocket;
+    private final int port;
 
-    public GameServer() throws IOException{
+    /**
+     * GameServer constructor with specific port to connect
+     * @param port to listen to
+     * @throws IOException if IO issue arise during the ServerSocket initialization*/
+    public GameServer(int port) throws IOException{
         this.inUse=false;
         this.lock= new ReentrantLock();
         this.queueInUse = new Condition[2];
@@ -32,8 +37,8 @@ public class GameServer {
             this.queueInUse[i]= lock.newCondition();
 
         this.queue=new int[2];//0 for main-server 1 to rejoin
-
-        this.serverSocket = new ServerSocket(8080);
+        this.port=port;
+        this.serverSocket = new ServerSocket(this.port);
         this.playersQueue = new LinkedList<>();
 
     }
@@ -46,6 +51,10 @@ public class GameServer {
         }
     }
 
+    /**
+     * this method start the main server loop, it gives less priority to clients connecting for the first time,
+     * handles connections and times outs then queue the clients and start the lobby threads*/
+
     public void start(){
         while (true){
             try {
@@ -57,7 +66,7 @@ public class GameServer {
                 }
                 this.inUse=true;
                 System.out.println("SERVER: ready to accept...");
-                Socket socket = serverSocket.accept();
+                Socket socket = this.serverSocket.accept();
                 socket.setSoTimeout(100);//the client has only 100ms, from the readline call, to send the username before being timed-out
                 BufferedReader bufferedReader=null;
                 String user="";
@@ -78,7 +87,7 @@ public class GameServer {
                 playersQueue.add(p);
                 System.out.println("SERVER: " + user + " accepted successfully!");
                 if (playersQueue.size() > 2) {
-                    GameLobby gameLobby = new GameLobby(playersQueue.remove(), playersQueue.remove());
+                    GameLobby gameLobby = new GameLobby(this.playersQueue.remove(), this.playersQueue.remove(),this);
                     gameLobby.setDaemon(true);
                     gameLobby.start();
                 }
@@ -92,12 +101,15 @@ public class GameServer {
                 else if(this.queue[0]>0)
                     this.queueInUse[0].signalAll();
                 this.inUse=false;
-                lock.unlock();
+                this.lock.unlock();
             }
         }
     }
 
-    public void requeue(Player p){
+    /**
+     * this method requeue a still connected player that exited form a running lobby, this method has priority over the standard connection procedure
+     * @param player to requeue*/
+    public void requeue(Player player){
         this.lock.lock();
 
         try {
@@ -107,9 +119,10 @@ public class GameServer {
                 this.queue[1]--;
             }
             this.inUse=true;
-            this.playersQueue.add(p);
+            this.playersQueue.add(player);
         }catch (InterruptedException e){
-
+            player.closeAll();
+            System.err.println("Player requeue error: "+e);
         }finally {
             if(this.queue[1]>0)
                 this.queueInUse[1].signalAll();
@@ -118,6 +131,10 @@ public class GameServer {
             this.inUse=false;
             this.lock.unlock();
         }
+    }
+
+    public ServerSocket getServerSocket(){
+        return this.serverSocket;
     }
 
 }
