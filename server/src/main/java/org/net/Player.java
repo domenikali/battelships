@@ -67,6 +67,9 @@ public class Player {
     public boolean isConnected(){
         return this.socket.isClosed();
     }
+    public Socket getSocket(){
+        return this.socket;
+    }
 
 
 
