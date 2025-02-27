@@ -31,33 +31,42 @@ public class GameLobby extends Thread {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                String init ="";
-                try{
-                    firstPlayer.getSocket().setSoTimeout(5000);
-                    init = firstPlayer.receiveMessage();
-                    firstPlayer.getSocket().setSoTimeout(0);
-                }catch (IOException e ){
-                    firstPlayer.closeAll();
-                    closeLobby();
-                }
-                Game game = new Game(init);
-                int lives = game.getLives();
-                while(lives>0){
-                    String serializeMessage =firstPlayer.receiveMessage();
-                    if(serializeMessage.charAt(0)<10){
-                        if(game.hit(serializeMessage))
-                            lives--;
-
-                    }else if(serializeMessage.charAt(0)>20){
-                        secondPlayer.sendMessage(serializeMessage);
-                    }
-                }
-                firstPlayer.sendMessage((char)13+"");
-                secondPlayer.sendMessage((char)12+"");
-                closeLobby();
+                play(secondPlayer, firstPlayer);
             }
         });
         t.start();
+        Thread d = new Thread(() -> {
+            play(firstPlayer, secondPlayer);
+        });
+        d.start();
+    }
+
+    private void play(Player receivingPlayer, Player sendingPlayer) {
+        String init ="";
+        try{
+            sendingPlayer.getSocket().setSoTimeout(5000);
+            init = sendingPlayer.receiveMessage();
+        }catch (IOException e ){
+            sendingPlayer.closeAll();
+            closeLobby();
+        }
+        Game game = new Game(init);
+        int lives = game.getLives();
+        while(lives>0){
+            String serializeMessage = receivingPlayer.receiveMessage();
+            if(serializeMessage.charAt(0)<10){
+                if(game.hit(serializeMessage))
+                    lives--;
+                sendingPlayer.sendMessage(serializeMessage);
+
+
+            }else if(serializeMessage.charAt(0)>20){
+                sendingPlayer.sendMessage(serializeMessage);
+            }
+        }
+        receivingPlayer.sendMessage((char)13+"");
+        sendingPlayer.sendMessage((char)12+"");
+        closeLobby();
     }
 
     /**

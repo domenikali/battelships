@@ -87,6 +87,7 @@ public class GameServer {
                 playersQueue.add(p);
                 System.out.println("SERVER: " + user + " accepted successfully!");
                 if (playersQueue.size() > 2) {
+                    System.out.println("SERVER: lobby starting...");
                     GameLobby gameLobby = new GameLobby(this.playersQueue.remove(), this.playersQueue.remove(),this);
                     gameLobby.setDaemon(true);
                     gameLobby.start();
