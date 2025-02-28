@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +19,6 @@ class ServerTest {
         });
         s.start();
 
-        Thread.sleep(100);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {

@@ -67,7 +67,7 @@ public class GameServer {
                 this.inUse=true;
                 System.out.println("SERVER: ready to accept...");
                 Socket socket = this.serverSocket.accept();
-                socket.setSoTimeout(1000);//the client has only 100ms, from the readline call, to send the username before being timed-out
+                socket.setSoTimeout(100);//the client has only 100ms, from the readline call, to send the username before being timed-out
                 BufferedReader bufferedReader=null;
                 String user="";
                 Player p;
