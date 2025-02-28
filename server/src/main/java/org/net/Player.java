@@ -33,6 +33,7 @@ public class Player {
     public void sendMessage(String message){
         try {
             this.out.write(message+"\n");
+            this.out.flush();
         }catch (IOException e){
             this.closeAll();
             System.out.println("Client sender issue: "+e);

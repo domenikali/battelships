@@ -67,7 +67,7 @@ public class GameServer {
                 this.inUse=true;
                 System.out.println("SERVER: ready to accept...");
                 Socket socket = this.serverSocket.accept();
-                socket.setSoTimeout(100);//the client has only 100ms, from the readline call, to send the username before being timed-out
+                socket.setSoTimeout(1000);//the client has only 100ms, from the readline call, to send the username before being timed-out
                 BufferedReader bufferedReader=null;
                 String user="";
                 Player p;
@@ -81,12 +81,12 @@ public class GameServer {
                     //if the connection is timed-out or there are buff. issue the server keeps going
                     socket.close();
                     if(bufferedReader!=null)bufferedReader.close();
-                    System.out.println("SERVER: connection timed out");
+                    System.out.println("SERVER: connection timed out: "+e);
                     continue;
                 }
                 playersQueue.add(p);
                 System.out.println("SERVER: " + user + " accepted successfully!");
-                if (playersQueue.size() > 2) {
+                if (playersQueue.size() >= 2) {
                     System.out.println("SERVER: lobby starting...");
                     GameLobby gameLobby = new GameLobby(this.playersQueue.remove(), this.playersQueue.remove(),this);
                     gameLobby.setDaemon(true);

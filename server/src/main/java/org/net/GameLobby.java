@@ -24,9 +24,11 @@ public class GameLobby extends Thread {
 
     @Override
     public void run() {
+        System.out.println(Thread.currentThread().getName()+" Lobby started...");
         char c = (char)11;
         this.firstPlayer.sendMessage(c+"Game Start!");
         this.secondPlayer.sendMessage(c+"Game Start!");
+        System.out.println("Start message sent");
 
         Thread t = new Thread(new Runnable() {
             @Override

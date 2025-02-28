@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +20,7 @@ class ServerTest {
         });
         s.start();
 
-
+        Thread.sleep(100);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -27,6 +28,7 @@ class ServerTest {
             }
         });
         t.start();
+        Thread.sleep(10);
         Thread d = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -34,6 +36,7 @@ class ServerTest {
             }
         });
         d.start();
+        d.join();
         t.join();
     }
 
@@ -47,12 +50,16 @@ class ServerTest {
             System.out.println("connected...");
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bufferedWriter.write("test");
+            bufferedWriter.write("test"+"\n");
+            bufferedWriter.flush();
+            System.out.println("User sent");
 
             String message =bufferedReader.readLine();
-            assertEquals(message.charAt(0),10);
-            Thread.sleep(1000);
-        }catch (IOException|InterruptedException e){
+            System.out.println((int)message.charAt(0));
+
+            assertEquals(message.charAt(0),11);
+
+        }catch (IOException e){
             fail("Socket creation: "+e);
         }
     }
