@@ -24,17 +24,17 @@ class GameTest {
 
     @Test
     public void bigSetTest(){
-        String serialized= "";
+        StringBuilder serialized= new StringBuilder();
         Set<String> testSet= new HashSet<>();
         for(int i=0;i<10;i++){
             Ship s = new Ship(Direction.NORD,1,new Pair(i,i));
-            serialized+=s.serialize();
+            serialized.append(s.serialize());
         }
         for (int i=0;i<10;i++){
             testSet.add(new Pair(i,i).serialize());
         }
 
-        Game game = new Game(serialized);
+        Game game = new Game(serialized.toString());
         assertEquals(game.getShipLocations(),testSet);
 
     }

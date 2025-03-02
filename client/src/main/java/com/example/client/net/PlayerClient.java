@@ -9,7 +9,7 @@ import java.net.Socket;
 public class PlayerClient {
     private final String IP = "127.0.0.1";
     private final int PORT;
-    private String user;
+    private final String user;
     private Socket socket;
 
     private BufferedWriter writer;

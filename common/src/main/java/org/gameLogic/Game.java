@@ -1,7 +1,6 @@
 package org.gameLogic;
 
 import org.util.Direction;
-import org.util.Ship;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +9,7 @@ import java.util.Set;
  * this class handles the game logic
  * I've chosen to use a set of string to have a O(1) time complexity at each turn to avoid deserialization*/
 public class Game {
-    private Set<String> shipLocations;
+    private final Set<String> shipLocations;
     private int lives;
 
     public Game(String serialized){

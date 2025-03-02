@@ -69,14 +69,11 @@ class GameServerTest {
             Thread serverT=new Thread(g::start);
             serverT.start();
 
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try(Socket ignored = new Socket("localhost", port)) {
-                        Thread.sleep(1000);
-                    }catch (IOException|InterruptedException e){
-                        fail("IOEX: "+e);
-                    }
+            Thread t = new Thread(() -> {
+                try(Socket ignored = new Socket("localhost", port)) {
+                    Thread.sleep(1000);
+                }catch (IOException|InterruptedException e){
+                    fail("IOEX: "+e);
                 }
             });
             t.start();

@@ -21,7 +21,7 @@ class ShipTest {
     @Test
     void wrongString(){
         Ship ship = new Ship();
-        String str = "worong";
+        String str = "wrong";
         assertThrows(IllegalArgumentException.class,()->ship.deserialize(str));
     }
 

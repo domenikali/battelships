@@ -4,7 +4,6 @@ import org.server.Serializer;
 
 /**
  * Pair cals to use for any two-dimensional coordinate
- *
  * */
 public class Pair extends Serializer<Pair> {
     private final int x;
@@ -43,8 +42,8 @@ public class Pair extends Serializer<Pair> {
         if(serialized.length()!=2)
             throw new IllegalArgumentException();
 
-        int x= (int)serialized.charAt(0);
-        int y=(int)serialized.charAt(1);
+        int x= serialized.charAt(0);
+        int y=serialized.charAt(1);
         return new Pair(x,y);
     }
 

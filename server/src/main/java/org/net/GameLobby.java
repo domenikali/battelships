@@ -30,16 +30,9 @@ public class GameLobby extends Thread {
         this.secondPlayer.sendMessage(c+"Game Start!");
         System.out.println("Start message sent");
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                play(secondPlayer, firstPlayer);
-            }
-        });
+        Thread t = new Thread(() -> play(secondPlayer, firstPlayer));
         t.start();
-        Thread d = new Thread(() -> {
-            play(firstPlayer, secondPlayer);
-        });
+        Thread d = new Thread(() -> play(firstPlayer, secondPlayer));
         d.start();
     }
 

@@ -63,9 +63,9 @@ public class Ship extends Serializer<Ship> {
 
         Pair p = new Pair();
         p= p.deserialize(serialized.substring(0,2));
-        int size=(int)serialized.charAt(2);
+        int size=serialized.charAt(2);
         try{
-            Direction d = Direction.newDirection((int)serialized.charAt(3));
+            Direction d = Direction.newDirection(serialized.charAt(3));
             return new Ship(d,size,p);
         }catch (IndexOutOfBoundsException e){
             throw new IllegalArgumentException();
