@@ -54,5 +54,4 @@ class ServerTest {
             fail("Socket creation: "+e);
         }
     }
-
 }

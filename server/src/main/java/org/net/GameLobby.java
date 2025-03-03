@@ -38,6 +38,8 @@ public class GameLobby extends Thread {
 
     private void play(Player receivingPlayer, Player sendingPlayer) {
         String init ="";
+        char HIT = (char)14;
+        char NO_HIT = (char)15;
         try{
             sendingPlayer.getSocket().setSoTimeout(5000);
             init = sendingPlayer.receiveMessage();
@@ -50,10 +52,13 @@ public class GameLobby extends Thread {
         while(lives>0){
             String serializeMessage = receivingPlayer.receiveMessage();
             if(serializeMessage.charAt(0)<10){
-                if(game.hit(serializeMessage))
+                if(game.hit(serializeMessage)){
                     lives--;
+                    receivingPlayer.sendMessage(HIT+"");
+                }else{
+                    receivingPlayer.sendMessage(NO_HIT+"");
+                }
                 sendingPlayer.sendMessage(serializeMessage);
-
 
             }else if(serializeMessage.charAt(0)>20){
                 sendingPlayer.sendMessage(serializeMessage);
